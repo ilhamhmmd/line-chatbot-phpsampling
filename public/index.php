@@ -81,8 +81,12 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
                         // $event['message']['text'] merupakan text kiriman dari user
                         // $result = $bot->replyText($event['replyToken'], $event['message']['text']);
 
+                        //Kirim pesan dengan stiker
+                        $packageId = 1;
+                        $stickerId = 121;
+                        $stickerMessageBuilder = new StickerMessageBuilder($packageId, $stickerId);
                         // or we can use replyMessage() instead to send reply message
-                        $textMessageBuilder = new TextMessageBuilder($event['message']['text']);
+                        // $textMessageBuilder = new TextMessageBuilder($event['message']['text']);
                         $result = $bot->replyMessage($event['replyToken'], $textMessageBuilder);
                     }
 
