@@ -12,7 +12,7 @@ use \LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 use \LINE\LINEBot\MessageBuilder\StickerMessageBuilder;
 use \LINE\LINEBot\SignatureValidator as SignatureValidator;
  
-$pass_signature = true;
+$pass_signature = false;
  
 // set LINE channel_access_token and channel_secret
 $channel_access_token = "qDtcTT0sXm42bD2ePTMNRg2PkMVZpYCPaHL3q/W5HrVBJjyMzKYcdaKjj/4QsRSFYYKogRFK11v+3eL042YHukYDHl7qoeHGXKRVhkzXfXhlVWLmd+hI/xB8iKBEXhBEjl00IsVJXLjSfHJZ+ANVCwdB04t89/1O/w1cDnyilFU=";
