@@ -83,11 +83,23 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
 
                         //Kirim pesan dengan stiker
                         $packageId = 1;
-                        $stickerId = 121;
-                        $stickerMessageBuilder = new StickerMessageBuilder($packageId, $stickerId);
+                        $stickerId = 121;                        
+                        // $stickerMessageBuilder = new StickerMessageBuilder($packageId, $stickerId);
+
+                        $resMultiMessage = [
+                            'textMessageBuilder' => new TextMessageBuilder('ini pesan balasan pertama'),
+                            'stickerMessageBuilder' => new StickerMessageBuilder($packageId, $stickerId)
+                        ];
+
+                        // Multiple Message
+                        // $textMessageBuilder1 = new TextMessageBuilder('ini pesan balasan pertama');
+                        // $textMessageBuilder2 = new TextMessageBuilder('ini pesan balasan kedua');
+
+                        $multiMessageBuilder->add($resMultiMessage);
+
                         // or we can use replyMessage() instead to send reply message
                         // $textMessageBuilder = new TextMessageBuilder($event['message']['text']);
-                        $result = $bot->replyMessage($event['replyToken'], $stickerMessageBuilder);
+                        $result = $bot->replyMessage($event['replyToken'], $multiMessageBuilder);
                     }
 
                     $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
