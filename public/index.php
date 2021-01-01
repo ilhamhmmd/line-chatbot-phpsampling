@@ -86,7 +86,6 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
                         $stickerId = 121;                        
                         $stickerMessageBuilder = new StickerMessageBuilder($packageId, $stickerId);
 
-
                         // Multiple Message
                         $textMessageBuilder1 = new TextMessageBuilder('ini pesan balasan pertama');
                         $textMessageBuilder2 = new TextMessageBuilder('ini pesan balasan kedua');
