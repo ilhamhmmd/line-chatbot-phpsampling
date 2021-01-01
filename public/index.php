@@ -10,6 +10,7 @@ use \LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use \LINE\LINEBot\MessageBuilder\MultiMessageBuilder;
 use \LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 use \LINE\LINEBot\MessageBuilder\StickerMessageBuilder;
+use \LINE\LINEBot\MessageBuilder\ImageMessageBuilder;
 use \LINE\LINEBot\SignatureValidator as SignatureValidator;
 
 $pass_signature = true;
@@ -81,19 +82,21 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
                         // $event['message']['text'] merupakan text kiriman dari user
                         // $result = $bot->replyText($event['replyToken'], $event['message']['text']);
 
-                        //Kirim pesan dengan stiker
+                        //respon message stiker
                         $packageId = 1;
                         $stickerId = 121;                        
                         $stickerMessageBuilder = new StickerMessageBuilder($packageId, $stickerId);
 
-                        // Multiple Message
+                        // response multiple Message
                         $textMessageBuilder1 = new TextMessageBuilder('ini pesan balasan pertama');
                         $textMessageBuilder2 = new TextMessageBuilder('ini pesan balasan kedua');
+                        $imageMessageBuilder = new ImageMessageBuilder('https://www.google.com/url?sa=i&url=https%3A%2F%2Fgithub.com%2Filhamhmmd&psig=AOvVaw0WlQV-o-8-F2VuvW5KCRJ4&ust=1609583571560000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCMi8jKbE-u0CFQAAAAAdAAAAABAD', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fgithub.com%2Filhamhmmd&psig=AOvVaw0WlQV-o-8-F2VuvW5KCRJ4&ust=1609583571560000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCMi8jKbE-u0CFQAAAAAdAAAAABAD');
 
                         $multiMessageBuilder = new MultiMessageBuilder();
                         $multiMessageBuilder->add($textMessageBuilder1);
                         $multiMessageBuilder->add($textMessageBuilder2);
                         $multiMessageBuilder->add($stickerMessageBuilder);
+                        $multiMessageBuilder->add($imageMessageBuilder);
 
                         // or we can use replyMessage() instead to send reply message
                         // $textMessageBuilder = new TextMessageBuilder($event['message']['text']);
