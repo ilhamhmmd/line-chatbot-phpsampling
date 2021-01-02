@@ -114,7 +114,7 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
                     $event['message']['type'] == 'audio' or
                     $event['message']['type'] == 'file'
                 ) {
-                    $contentURL = " https://example.herokuapp.com/public/content/" . $event['message']['id'];
+                    $contentURL = " https://line-chat-php.herokuapp.com/public/content/" . $event['message']['id'];
                     $contentType = ucfirst($event['message']['type']);
                     $result = $bot->replyText($event['replyToken'],
                         $contentType . " yang Anda kirim bisa diakses dari link:\n " . $contentURL);
