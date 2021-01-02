@@ -169,8 +169,7 @@ $app->get('/pushmessage', function ($req, $response) use ($bot) {
         ->withStatus($result->getHTTPStatus());
 });
 
-$app->get('/multicast', function($req, $response) use ($bot)
-{
+$app->get('/multicast', function($req, $response) use ($bot) {
     // list of users
     $userList = [
         'U9926f7db24ab20025ce0f8f4ef75ff42'
@@ -187,8 +186,7 @@ $app->get('/multicast', function($req, $response) use ($bot)
         ->withStatus($result->getHTTPStatus());
 });
 
-$app->get('/profile', function ($req, $response) use ($bot)
-{
+$app->get('/profile', function ($req, $response) use ($bot) {
     // get user profile
     $userId = 'U9926f7db24ab20025ce0f8f4ef75ff42';
     $result = $bot->getProfile($userId);
@@ -206,6 +204,17 @@ $app->get('/profilesearch/{userId}', function ($req, $response, $args) use ($bot
     $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
     return $response
         ->withHeader('Content-Type', 'application/json')
+        ->withStatus($result->getHTTPStatus());
+});
+
+$app->get('/content/{messageId}', function ($req, $response, $args) use ($bot) {
+    // get message content
+    $messageId = $args['messageId'];
+    $result = $bot->getMessageContent($messageId);
+    // set response
+    $response->getBody()->write($result->getRawBody());
+    return $response
+        ->withHeader('Content-Type', $result->getHeader('Content-Type'))
         ->withStatus($result->getHTTPStatus());
 });
 
