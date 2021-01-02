@@ -187,4 +187,16 @@ $app->get('/multicast', function($req, $response) use ($bot)
         ->withStatus($result->getHTTPStatus());
 });
 
+$app->get('/profile', function ($req, $response) use ($bot)
+{
+    // get user profile
+    $userId = 'U9926f7db24ab20025ce0f8f4ef75ff42';
+    $result = $bot->getProfile($userId);
+ 
+    $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
+    return $response
+        ->withHeader('Content-Type', 'application/json')
+        ->withStatus($result->getHTTPStatus());
+});
+
 $app->run();
