@@ -57,7 +57,58 @@ $app->post('/webhook', function (Request $request, Response $response) use ($cha
     if (is_array($data['events'])) {
         foreach ($data['events'] as $event) {
             if ($event['type'] == 'message') {
-                if (
+                //reply message
+                if ($event['message']['type'] == 'text') {
+                    if (strtolower($event['message']['text']) == 'user id') {
+
+                        $result = $bot->replyText($event['replyToken'], $event['source']['userId']);
+
+                    } elseif (strtolower($event['message']['text']) == 'flex message') {
+
+                        $flexTemplate = file_get_contents("../flex_message.json"); // template flex message
+                        $result = $httpClient->post(LINEBot::DEFAULT_ENDPOINT_BASE . '/v2/bot/message/reply', [
+                            'replyToken' => $event['replyToken'],
+                            'messages'   => [
+                                [
+                                    'type'     => 'flex',
+                                    'altText'  => 'Test Flex Message',
+                                    'contents' => json_decode($flexTemplate)
+                                ]
+                            ],
+                        ]);
+
+                    } else {
+                        // send same message as reply to user
+                        // $event['message']['text'] merupakan text kiriman dari user
+                        // $result = $bot->replyText($event['replyToken'], $event['message']['text']);
+
+                        //respon message stiker
+                        $packageId = 1;
+                        $stickerId = 121;                        
+                        $stickerMessageBuilder = new StickerMessageBuilder($packageId, $stickerId);
+
+                        // response multiple Message
+                        $textMessageBuilder1 = new TextMessageBuilder('ini pesan balasan pertama');
+                        $textMessageBuilder2 = new TextMessageBuilder('ini pesan balasan kedua');
+                        $imageMessageBuilder = new ImageMessageBuilder('https://www.google.com/url?sa=i&url=https%3A%2F%2Fgithub.com%2Filhamhmmd&psig=AOvVaw0WlQV-o-8-F2VuvW5KCRJ4&ust=1609583571560000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCMi8jKbE-u0CFQAAAAAdAAAAABAD', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fgithub.com%2Filhamhmmd&psig=AOvVaw0WlQV-o-8-F2VuvW5KCRJ4&ust=1609583571560000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCMi8jKbE-u0CFQAAAAAdAAAAABAD');
+
+                        $multiMessageBuilder = new MultiMessageBuilder();
+                        $multiMessageBuilder->add($textMessageBuilder1);
+                        $multiMessageBuilder->add($textMessageBuilder2);
+                        $multiMessageBuilder->add($stickerMessageBuilder);
+                        $multiMessageBuilder->add($imageMessageBuilder);
+
+                        // or we can use replyMessage() instead to send reply message
+                        // $textMessageBuilder = new TextMessageBuilder($event['message']['text']);
+                        $result = $bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+                    }
+
+                    $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
+                    return $response
+                        ->withHeader('Content-Type', 'application/json')
+                        ->withStatus($result->getHTTPStatus());
+                } //content api
+                elseif (
                     $event['message']['type'] == 'image' or
                     $event['message']['type'] == 'video' or
                     $event['message']['type'] == 'audio' or
