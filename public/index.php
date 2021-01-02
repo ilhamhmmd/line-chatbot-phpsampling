@@ -199,4 +199,14 @@ $app->get('/profile', function ($req, $response) use ($bot)
         ->withStatus($result->getHTTPStatus());
 });
 
+$app->get('/profilesearch/{userId}', function ($req, $response, $args) use ($bot) {
+    // get user profile
+    $userId = $args['userId'];
+    $result = $bot->getProfile($userId);
+    $response->getBody()->write(json_encode($result->getJSONDecodedBody()));
+    return $response
+        ->withHeader('Content-Type', 'application/json')
+        ->withStatus($result->getHTTPStatus());
+});
+
 $app->run();
